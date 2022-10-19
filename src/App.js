@@ -1,23 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import Feed from "./components/Feed";
+import Header from "./components/Header";
+import Modal from "./components/Modal";
+import Profile from "./components/Profile";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="w-full bg-zinc-50 flex flex-col justify-center items-center relative">
+      <Header />
+      <section className="flex flex-col w-5/6 min-w-[300px] justify-around">
+        <Routes>
+          <Route path="/" element={<Feed />} />
+          <Route path="profile" element={<Profile />} />  
+          
+        </Routes>
+      </section>
+      <Modal />
     </div>
   );
 }
