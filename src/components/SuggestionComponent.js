@@ -1,5 +1,5 @@
 function SuggestionComponent({ name, email, profileImage }) {
-  console.log(profileImage);
+
   return (
     <div className="flex justify-between mt-5 items-center">
       <div className="flex">

@@ -4,10 +4,10 @@ import Suggection from "./Suggection";
 
 function Feed() {
   return (
-    <div className="flex justify-center min-h-screen h-auto w-full mt-16">
+    <div className=" p-3 lg:p-0 flex justify-center min-h-screen h-auto w-full lg:mt-16 sm:mt-2">
 
-      <div className="flex w-3/5 justify-between">
-        <section className="w-3/5">
+      <div className="flex w-full lg:w-3/5 justify-between">
+        <section className=" w-full lg:w-3/5">
          
             <Stories />
          

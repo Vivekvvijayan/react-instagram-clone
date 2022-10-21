@@ -4,7 +4,7 @@ import { faker } from "@faker-js/faker";
 
 function Suggection() {
   return (
-    <div className=" h-[450px] w-[350px]">
+    <div className=" hidden lg:block lg:h-[450px] lg:w-[350px]">
       {/* profile compoenet */}
 
       <div className="">

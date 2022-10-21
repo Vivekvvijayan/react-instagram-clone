@@ -1,6 +1,6 @@
 function ImageProfile({ src, likes }) {
   return (
-    <div className="w-[300px] h-[300px] object-cover bg-red-100 cursor-pointer">
+    <div className=" w-[150px] h-[140px] lg:w-[300px] lg:h-[300px] object-cover bg-zinc-100 lg:cursor-pointer">
       <div className="flex items-center justify-center w-full h-full object-cover">
         <img src={src} alt="" className="w-full h-full" />
       </div>

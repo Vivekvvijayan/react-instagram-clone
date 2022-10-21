@@ -14,7 +14,7 @@ function Stories() {
   }, []);
 
   return (
-    <div className=" flex border border-gray-200 bg-white h-32 items-center max-w-5/6 w-full overflow-x-auto scroll-smooth rounded-lg scrollbar-thin scrollbar-thumb-gray-300">
+    <div className=" flex border border-gray-200 bg-white h-36 lg:h-32 items-center max-w-5/6 w-full overflow-x-auto scroll-smooth rounded-lg scrollbar-thin scrollbar-thumb-gray-300">
       {stories.length > 0 &&
         stories.map((element) => (
           <Story image={element.profileImage} uname={element.uname} />
