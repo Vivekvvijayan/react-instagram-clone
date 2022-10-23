@@ -9,7 +9,7 @@ function Header() {
   const { setIsOpen } = useContext(ModalContext);
 
   return (
-    <div className="flex justify-between lg:justify-evenly p-4 w-full bg-white border-b-2 sticky top-0 left-0 right-0">
+    <div className="flex lg:h-auto h-14 items-center justify-between lg:justify-evenly p-2 lg:p-4 w-full bg-white border-b-2 sticky top-0 left-0 right-0 z-40">
       <Link to="/" className="">
         <div className="header_logo w-32 lg:w-36 flex items-center">
           <img src="/instagram.png" alt="" className="object-cover" />
@@ -26,11 +26,13 @@ function Header() {
       </div>
 
       <div className="header_right flex justify-evenly w-1/5 items-center   ">
+        <Link to="/">
         <img
           src="/home.png"
           alt=""
           className=" hidden lg:w-8 lg:block cursor-pointer"
-        />
+          />
+          </Link>
         <img
           src="/message.png"
           alt=""

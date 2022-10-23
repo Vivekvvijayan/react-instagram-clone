@@ -5,9 +5,13 @@ function Login() {
   const { setAuthUser } = useContext(AuthContext);
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
+
   const handleLogin = () => {
     signInWithPopup(auth, provider).then((result) => {
       setAuthUser(result);
+      
+      localStorage.setItem("key",JSON.stringify(result.user.refreshToken))
+     
      
     });
   };

@@ -9,6 +9,7 @@ import { useEffect, useContext } from "react";
 import "./firebase";
 import { getAuth } from "firebase/auth";
 import { AuthContext } from "./Context/AuthContext";
+import Loader from "./components/Loader";
 
 function App() {
   const navigate = useNavigate();
@@ -17,16 +18,18 @@ function App() {
     getAuth().onAuthStateChanged((user) => {
       if (!user) {
         setAuthUser({});
+        localStorage.removeItem("key")
       } else {
         setAuthUser(user);
+        localStorage.setItem("accessToken",user.refreshToken)
         navigate("/");
       }
     });
   }, [authUser,setAuthUser]);
   return (
     <>
-      {authUser.accessToken ? (
-        <div className="w-full bg-zinc-50 flex flex-col justify-center items-center relative">
+      { authUser.accessToken ? (
+        <div className="w-full h-full bg-white lg:bg-zinc-50 flex flex-col justify-center items-center relative">
           <Header />
           <section className="flex flex-col w-full lg:w-5/6 min-w-[300px] justify-around">
             <Routes>
@@ -35,12 +38,16 @@ function App() {
               <Route path="/login" element={<Login />} />
             </Routes>
           </section>
-          <BottomNav />
+          {/* <BottomNav /> */}
           <Modal />
+          <BottomNav />
         </div>
-      ) : (
-        <Login />
-      )}
+      ) : !localStorage.getItem("key") ? <Login /> : <Loader />
+        
+        
+          
+        
+      }
     </>
   );
 }

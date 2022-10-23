@@ -5,7 +5,7 @@ import { useContext } from "react";
 function BottomNav() {
   const {authUser} = useContext(AuthContext)
   return (
-    <div className="w-full h-16 p-2 flex justify-around items-center  bg-white border-t border-zinc-100 fixed bottom-0 left-0 lg:hidden">
+    <div className="w-full h-12 rounded-tr-sm rounded-tl-sm p-2 flex justify-around items-center  bg-white border-t border-zinc-100 fixed bottom-0 left-0 lg:hidden">
         <Link to="/">
         <img
           src="/home.png"

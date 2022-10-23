@@ -57,9 +57,11 @@ function Modal() {
       username: authUser.displayName,
       profileImage: authUser.photoURL,
       caption: caption,
+      likesNo: 0,
       timeStamp: serverTimestamp(),
+      likedUsers: [],
+      comments: [],
     });
-    console.log("Document Added: " + docRef.id);
 
     const imageRef = ref(storage, `posts/${docRef.id}/image`);
 
@@ -72,7 +74,8 @@ function Modal() {
         });
       }
     );
-    setSelectedImage("")
+    setSelectedImage("");
+    setSelectImage(false);
     setLoading(false);
     setIsOpen(false);
   };
@@ -80,7 +83,12 @@ function Modal() {
   return (
     // Use the `Transition` component at the root level
     <Transition show={isOpen} as={Fragment}>
-      <Dialog as="div" onClose={() => setIsOpen(isOpen)}>
+      <Dialog
+        as="div"
+        onClose={() => {
+          setIsOpen(isOpen);
+        }}
+      >
         {/*
           Use one Transition.Child to apply one transition to the backdrop...
         */}
@@ -94,7 +102,7 @@ function Modal() {
           leaveTo="opacity-0"
         >
           <form>
-            <div className=" fixed inset-0 bg-black/30 lg:w-100 lg:h-100">
+            <div className=" fixed inset-0 bg-black/30 lg:w-100 lg:h-100 z-50">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -104,10 +112,10 @@ function Modal() {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0 scale-95 opacity-0"
               >
-                <div className="w-full h-4/6 lg:p-0 lg:w-2/6 lg:h-3/4 bg-white absolute top-[50%] left-[50%] -translate-y-1/2 -translate-x-1/2 rounded-xl">
+                <div className="w-[90%] min-h-[60%]   lg:min-h-[50%] flex justify-evenly items-center flex-col  max-h-5/6 lg:p-0 lg:w-2/6 lg:max-h-1/6 lg:h-3/5 bg-white absolute top-[50%] left-[50%] -translate-y-1/2 -translate-x-1/2 rounded-xl">
                   <Dialog.Title
                     as="h2"
-                    className="text-lg font-semibold leading-6 p-4 w-100 border-b border-gray-200 text-gray-900 text-center"
+                    className="text-lg font-semibold w-full leading-6 p-4 w-100 border-b border-gray-200 text-gray-900 text-center absolute top-0 left-0"
                   >
                     Create New Post
                   </Dialog.Title>
@@ -117,7 +125,7 @@ function Modal() {
                       {!selectImage ? (
                         <>
                           <div className="w-full h-50 flex flex-col justify-center items-center">
-                            <div className="w-25 h-32 object-cover">
+                            <div className=" w-20 h-20 lg:w-30 lg:h-30 object-cover">
                               <img
                                 src="/media.png"
                                 alt=""
@@ -145,12 +153,12 @@ function Modal() {
                           </button>
                         </>
                       ) : (
-                        <div className="w-full h-auto flex justify-center flex-col items-center">
-                          <div className="w-[80%] min-h-[300px] h-auto object-contain rounded-lg flex justify-center border border-zinc-200">
+                        <div className=" w-[200px] h-auto lg:h-[100%] lg:w-[80%] mt-10 lg:mb-0 flex justify-center flex-col items-center">
+                          <div className=" w-[350px] lg:w-[500px] lg:h-[300px] lg:max-w-[100%] min-h-auto max-h-[600px] lg:max-h-auto  object-cover rounded-lg flex justify-center border border-zinc-200">
                             <img
                               src={selectedImage}
                               alt=""
-                              className=" h-full"
+                              className=" h-full w-full"
                             />
                           </div>
                           <input
@@ -161,7 +169,7 @@ function Modal() {
                           />
                           <button
                             type="button"
-                            className=" w-3/6 h-12 lg:w-2/6 lg:h-10 rounded-lg bg-[#0095f6] text-white font-semibold text-lg outline-none mt-4"
+                            className=" w-3/6 h-12 lg:w-2/6 mb-5 lg:h-10 rounded-lg bg-[#0095f6] text-white font-semibold text-lg outline-none mt-4"
                             onClick={handleUpload}
                           >
                             {!loading ? "Upload" : "Uploading..."}
@@ -176,7 +184,11 @@ function Modal() {
                 src="/close.png"
                 alt=""
                 className="absolute top-10 right-10 cursor-pointer"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false);
+                  setSelectedImage("");
+                  setSelectImage(false);
+                }}
               />
             </div>
           </form>

@@ -1,25 +1,32 @@
-import { faker } from "@faker-js/faker";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import ImageProfile from "./ImageProfile";
-import {db} from '../firebase'
-import { collection, getDoc } from 'firebase/firestore'
+import { db } from "../firebase";
+// import { collection, getDoc } from 'firebase/firestore'
 import { handleLogOut } from "../utils/Logout";
-const postRef = collection(db,"posts")
+import {
+  collection,
+  getDoc,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
+const postRef = collection(db, "posts");
 
 function Profile() {
   const [image, setImage] = useState([]);
   const { authUser } = useContext(AuthContext);
-  useEffect( () => {
+  const [postImages, setPostImages] = useState([]);
 
-    //  getDoc(postRef).then(result => {
-    //   if(result.exists){
-    //     console.log(result);
-    //   }
-    //  })
-   
-
-  }, []);
+  useEffect(() => {
+    onSnapshot(
+      query(collection(db, "posts"), orderBy("timeStamp", "desc")),
+      (snapshot) => {
+        setPostImages(snapshot.docs);
+      }
+    );
+  }, [db]);
 
   return (
     <div className="w-full mb-20 lg:mb-5 overflow-x-hidden lg:w-full h-auto lg:h-auto max-h-auto flex mt-5 min-h-screen lg:items-center flex-col lg:mt-16">
@@ -38,7 +45,10 @@ function Profile() {
             <button className="w-2/3 h-10 mt-2 lg:mt-0 lg:w-1/4 lg:h-12 border rounded-sm border-[#010101]">
               Edit Profile
             </button>
-            <button className=" lg:hidden w-1/3 h-8 mt-2 lg:mt-0 lg:w-2/4 lg:h-12 border rounded-sm border-[#010101]" onClick={handleLogOut}>
+            <button
+              className=" lg:hidden w-1/3 h-8 mt-2 lg:mt-0 lg:w-2/4 lg:h-12 border rounded-sm border-[#010101]"
+              onClick={handleLogOut}
+            >
               Logout
             </button>
           </div>
@@ -46,11 +56,14 @@ function Profile() {
       </div>
 
       {/* image section */}
-
-      <div class="grid grid-cols-3 lg:grid-rows-2 grid-flow-row gap-x-3 lg:gap-2 gap-y-14 lg:gap-y-14 lg:mt-20 h-auto lg:overflow-y-hidden">
-        {image.map((i) => (
-          <ImageProfile src={i.src} likes={i.likes} />
-        ))}
+      <p className="text-center font-semibold text-lg mt-5">Your Posts</p>
+      <div className="grid grid-cols-3 lg:grid-rows-2 grid-flow-row gap-x-3 lg:gap-2 gap-y-14 lg:gap-y-14 lg:mt-20 h-auto lg:overflow-y-hidden">
+        {/* {postImages.map((data) => (
+          <ImageProfile
+            src={data.data().image}
+            likes={data.data().likedUsers.length}
+          />
+        ))} */}
       </div>
     </div>
   );
