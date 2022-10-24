@@ -56,7 +56,7 @@ function Modal() {
     const docRef = await addDoc(postCollectionRef, {
       username: authUser.displayName,
       profileImage: authUser.photoURL,
-      caption: caption, 
+      caption: caption,
       timeStamp: serverTimestamp(),
       likedUsers: [],
       comments: [],
@@ -170,7 +170,7 @@ function Modal() {
                             type="button"
                             className="w-5/6 h-12 lg:w-2/6 mb-5 lg:h-10 rounded-lg bg-[#0095f6] text-white font-semibold text-lg outline-none mt-4"
                             onClick={handleUpload}
-                            desable={loading}
+                            disabled={loading}
                           >
                             {!loading ? "Upload" : "Uploading..."}
                           </button>
