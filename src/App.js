@@ -26,6 +26,8 @@ function App() {
       }
     });
   }, [authUser,setAuthUser]);
+
+  
   return (
     <>
       { authUser.accessToken ? (

@@ -8,6 +8,10 @@ module.exports = {
       extend: {
         display: ["group-hover"],
     },
+    fontFamily: {
+      sans: ['Graphik', 'sans-serif'],
+      serif: ['Merriweather', 'serif'],
+    },
     },
   },
   plugins: [

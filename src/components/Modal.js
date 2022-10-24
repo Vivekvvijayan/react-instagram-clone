@@ -56,8 +56,7 @@ function Modal() {
     const docRef = await addDoc(postCollectionRef, {
       username: authUser.displayName,
       profileImage: authUser.photoURL,
-      caption: caption,
-      likesNo: 0,
+      caption: caption, 
       timeStamp: serverTimestamp(),
       likedUsers: [],
       comments: [],
@@ -134,16 +133,16 @@ function Modal() {
                             </div>
                           </div>
 
-                          <p className="font-light text-3xl">
+                          <p className="font-light text-xl lg:text-3xl ">
                             Drag photos and videos here
                           </p>
 
                           <button
                             type="button"
-                            className=" w-3/6 h-12 lg:w-2/6 lg:h-10 rounded-lg bg-[#0095f6] text-white font-semibold text-lg outline-none mt-4"
+                            className=" w-3/6 h-12 lg:w-2/6 lg:h-10 rounded-lg bg-[#0095f6] text-white font-semibold text-base lg:text-lg outline-none mt-4"
                             onClick={handleSelectClick}
                           >
-                            Select From Computer
+                            Select From Device
                             <input
                               type="file"
                               hidden
@@ -153,7 +152,7 @@ function Modal() {
                           </button>
                         </>
                       ) : (
-                        <div className=" w-[200px] h-auto lg:h-[100%] lg:w-[80%] mt-10 lg:mb-0 flex justify-center flex-col items-center">
+                        <div className=" w-full h-auto lg:h-[100%] lg:w-[80%] mt-10 lg:mb-0 flex justify-center flex-col items-center">
                           <div className=" w-[350px] lg:w-[500px] lg:h-[300px] lg:max-w-[100%] min-h-auto max-h-[600px] lg:max-h-auto  object-cover rounded-lg flex justify-center border border-zinc-200">
                             <img
                               src={selectedImage}
@@ -169,8 +168,9 @@ function Modal() {
                           />
                           <button
                             type="button"
-                            className=" w-3/6 h-12 lg:w-2/6 mb-5 lg:h-10 rounded-lg bg-[#0095f6] text-white font-semibold text-lg outline-none mt-4"
+                            className="w-5/6 h-12 lg:w-2/6 mb-5 lg:h-10 rounded-lg bg-[#0095f6] text-white font-semibold text-lg outline-none mt-4"
                             onClick={handleUpload}
+                            desable={loading}
                           >
                             {!loading ? "Upload" : "Uploading..."}
                           </button>

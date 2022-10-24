@@ -1,10 +1,11 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import PostProfile from "./PostProfile";
 import Moment from "react-moment";
 import ClipLoader from "react-spinners/ClipLoader";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   serverTimestamp,
   Timestamp,
@@ -14,6 +15,8 @@ import {
 import { db } from "../firebase";
 import { AuthContext } from "../Context/AuthContext";
 import Comment from "./Comment";
+
+import { Popover } from "@headlessui/react";
 
 function Post({
   postID,
@@ -29,7 +32,7 @@ function Post({
   const { authUser } = useContext(AuthContext);
   const [liked, setLiked] = useState(likedUsers?.includes(authUser.email));
   const [comment, setComment] = useState("");
-  const [loading,setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   // handleLike
 
@@ -37,7 +40,6 @@ function Post({
     setLiked(true);
 
     updateDoc(doc(db, "posts", postID), {
-      likesNo: likesNo + 1,
       likedUsers: [...likedUsers, authUser.email],
     });
   };
@@ -46,10 +48,12 @@ function Post({
     setLiked(false);
 
     updateDoc(doc(db, "posts", postID), {
-      likesNo: likesNo - 1,
       likedUsers: likedUsers.filter((user) => user !== authUser.email),
     });
   };
+
+const [firstLikedMan, ...rest] = likedUsers.reverse();
+console.log(rest);
 
   // handlecomment feature
 
@@ -69,22 +73,26 @@ function Post({
   };
 
   return (
-    <div className="w-full max-h-5/6 min-h-3/6 h-auto bg-white mt-5 lg:mt-4 border-zinc-200 lg:border lg:border-zinc-200 lg:rounded-lg">
+    <div className="w-full max-h-5/6 min-h-3/6 h-auto bg-white mt-5 lg:mt-4 border-zinc-200 lg:border lg:border-zinc-200 lg:rounded-lg relative">
       {/* top of post */}
-      <div className="top flex justify-between items-center h-16 lg:h-20 p-3 border-b border-zinc-300">
+      <div className="top flex justify-between items-center h-16 lg:h-20 p-3 border-b border-zinc-300 ">
         <PostProfile u_name={u_name} u_image={u_image} />
-        <img src="/dots.png" alt="" className="h-6 lg:h-8 cursor-pointer" />
+
+        {authUser.displayName.toUpperCase() === u_name.toUpperCase() ? (
+          <MyPopover authUser={authUser} username={u_name} postID={postID} />
+        ) : (
+          <img src="/dots.png" alt="" className="h-6 lg:h-8 cursor-pointer" />
+        )}
       </div>
 
       {/* middle */}
 
-      <div className="post_image max-h-[500px] min-h-[250px] w-100 h-auto object-cover overflow-hidden cursor-pointer">
+      <div className="post_image max-h-[500px] lg:max-h-[1000px] min-h-[250px] w-100 h-auto object-cover overflow-hidden cursor-pointer">
         <img
           className="w-full h-full text-center"
           src={postImage}
           alt=""
           onDoubleClick={() => !liked && handleLike()}
-          
         />
       </div>
 
@@ -128,8 +136,16 @@ function Post({
         {/* <p className=" text-base lg:text-lg font-semibold mt-3">
           {likes === 0 ? " No Likes" : likes + " Likes"}
         </p> */}
-        <p className=" text-base lg:text-lg font-semibold mt-3">
+
+        <p className=" text-base lg:text-lg font-semibold mt-3 flex">
           {likedUsers.length === 0 ? " No likes" : likedUsers.length + " likes"}
+
+          <p className="ml-3 text-[14px] font-semibold">
+            {likedUsers.length > 0 &&
+              (firstLikedMan != authUser.email
+                ? firstLikedMan.split("@")[0]
+                : "") + (rest.length === 0 ? "" : " and more likes")}
+          </p>
         </p>
 
         <p className="font-semibold text-base  lg:text-base lg:mt-3">
@@ -164,13 +180,13 @@ function Post({
             onChange={(e) => setComment(e.target.value)}
             value={comment}
           />
+
           <button
-            // disabled={comment.trim("") === ""}
+            disabled={comment.trim(" ") === ""}
             className="pr-3 text-sm lg:text-lg font-semibold text-[#0095f6] lg:cursor-pointer bg-none"
             onClick={handleComment}
           >
-           Post
-          
+            Post
           </button>
         </div>
       </div>
@@ -179,3 +195,32 @@ function Post({
 }
 
 export default Post;
+
+function MyPopover({ postID }) {
+  const handleDeletePost = async (postID) => {
+    await deleteDoc(doc(db, "posts", postID));
+  };
+
+  return (
+    <Popover className="">
+      {({ open }) => (
+        /* Use the `open` state to conditionally change the direction of the chevron icon. */
+        <>
+          <Popover.Button className="text-white outline-none">
+            <img src="/dots.png" alt="" className="h-6 lg:h-8 cursor-pointer" />
+          </Popover.Button>
+          <Popover.Panel className="flex flex-col pr-1 absolute right-0">
+            <button
+              className="bg-[#efedef] p-3 text-gray font-semibold rounded-lg shadow-md"
+              onClick={() => {
+                handleDeletePost(postID);
+              }}
+            >
+              Delete Post
+            </button>
+          </Popover.Panel>
+        </>
+      )}
+    </Popover>
+  );
+}

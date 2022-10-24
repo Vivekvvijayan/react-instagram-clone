@@ -1,7 +1,9 @@
+
+
 function PostProfile({ u_name, u_image }) {
   return (
     <div className="left flex items-center">
-      <div className="bg-red-200 w-10 h-10 lg:h-10 lg:w-10 rounded-full flex justify-center items-center bg-gradient-to-t from-orange-400 via-red-500 to-pink-500">
+      <div className="bg-red-200 w-10 h-10 lg:h-10 lg:w-10 rounded-full flex justify-center items-center ">
         <img
           src={u_image}
           alt=""
@@ -17,3 +19,5 @@ function PostProfile({ u_name, u_image }) {
 }
 
 export default PostProfile;
+
+
